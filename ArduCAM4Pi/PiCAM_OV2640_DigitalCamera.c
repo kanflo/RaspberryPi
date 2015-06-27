@@ -39,7 +39,7 @@ void setup()
   if(temp != 0x55)
   {
   	printf("SPI interface Error!\n");
-  	while(1);
+  	exit(EXIT_FAILURE);
   }
 
   //Change MCU mode
@@ -50,10 +50,12 @@ void setup()
   //Check if the camera module type is OV2640
   rdSensorReg8_8(OV2640_CHIPID_HIGH, &vid);
   rdSensorReg8_8(OV2640_CHIPID_LOW, &pid);
-  if((vid != 0x26) || (pid != 0x42))
+  if((vid != 0x26) || (pid != 0x42)) {
   	printf("Can't find OV2640 module!\n");
-  else
+  	exit(EXIT_FAILURE);
+  } else {
   	printf("OV2640 detected\n");
+  }
 
   //Change to BMP capture mode and initialize the OV2640 module
   set_format(BMP);
@@ -133,8 +135,7 @@ int main(void)
 			if (fp == NULL)
 			{
 				printf("open file failed");
-				return 0;
-
+			  	exit(EXIT_FAILURE);
 			}
 			i = 0;
 			temp = read_fifo();
@@ -174,4 +175,5 @@ int main(void)
 			isShowFlag = TRUE;
 		}
 	}
+  	exit(EXIT_SUCCESS);
 }

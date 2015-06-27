@@ -39,7 +39,7 @@ void setup()
   if(temp != 0x55)
   {
   	printf("SPI interface Error!\n");
-  	while(1);
+  	exit(EXIT_FAILURE);
   }
   
   //Change MCU mode
@@ -50,10 +50,12 @@ void setup()
   //Check if the camera module type is OV5642
   rdSensorReg16_8(OV5642_CHIPID_HIGH, &vid);
   rdSensorReg16_8(OV5642_CHIPID_LOW, &pid);
-  if((vid != 0x56) || (pid != 0x42))
+  if((vid != 0x56) || (pid != 0x42)) {
   	printf("Can't find OV5642 module!\n");
-  else
+  	exit(EXIT_FAILURE);
+  } else {
   	printf("OV5642 detected\n");
+  }
   	
   //Change to BMP capture mode and initialize the OV5642 module	  	
   set_format(BMP);
@@ -134,8 +136,7 @@ int  main(void)
 			if (fp == NULL)
 			{
 				printf("open file failed");
-				return 0;
-
+			  	exit(EXIT_FAILURE);
 			}
 			i = 0;
 			temp = read_fifo();
@@ -175,4 +176,5 @@ int  main(void)
 			isShowFlag = TRUE;
 		}
 	}
+  	exit(EXIT_SUCCESS);
 }
