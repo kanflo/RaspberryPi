@@ -57,8 +57,11 @@ void setup()
   	printf("OV2640 detected\n");
   }
 
-  //Change to BMP capture mode and initialize the OV2640 module
-  set_format(BMP);
+  // Change to JPEG capture mode and initialize the OV2640 module
+  set_format(JPEG);
+  OV2640_set_JPEG_size(OV2640_1024x768);
+  sleep(2); // Let auto exposure do it's thing after changing image settings
+
 
   InitCAM();
 }
