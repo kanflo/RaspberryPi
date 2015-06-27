@@ -209,6 +209,9 @@ uint8_t read_fifo(void);
 uint8_t read_reg(uint8_t addr);
 void write_reg(uint8_t addr, uint8_t data);
 
+void bus_write(uint8_t address, uint8_t value);
+uint8_t bus_read(uint8_t address);
+
 int wrSensorRegs8_8(const struct sensor_reg*);
 int wrSensorRegs8_16(const struct sensor_reg*);
 int wrSensorRegs8_16(const struct sensor_reg reglist[]);

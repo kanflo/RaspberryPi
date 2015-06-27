@@ -290,6 +290,23 @@ void write_reg(uint8_t addr, uint8_t data)
 	bus_write(addr | 0x80, data);
 }
 
+void bus_write(uint8_t address, uint8_t value)
+{
+	uint8_t spiData [2] ;
+	spiData [0] = address ;
+  	spiData [1] = value ;
+	wiringPiSPIDataRW (SPI_ARDUCAM, spiData, 2) ;
+}
+
+uint8_t bus_read(uint8_t address)
+{
+	uint8_t spiData[2];
+	spiData[0] = address ;
+	spiData[1] = 0x00 ;
+  	wiringPiSPIDataRW (SPI_ARDUCAM, spiData, 2) ;
+  	return spiData[1];
+}
+
 uint8_t wrSensorReg8_8(uint8_t regID, uint8_t regDat)
 {
 	if(FD != -1)
