@@ -35,6 +35,6 @@ PiCAM_OV5642_DigitalCamera.o : PiCAM_OV5642_DigitalCamera.c
 	gcc -c PiCAM_OV5642_DigitalCamera.c -lwiringPi	
 
 clean : 
-	rm OV2640_Playback OV3640_Playback OV5642_Playback OV7670_Playback OV2640_DigitalCamera OV5642_DigitalCamera $(objects) /
-	PiCAM_OV2640_Playback.o PiCAM_OV3640_Playback.o PiCAM_OV5642_Playback.o PiCAM_OV7670_Playback.o /
+	rm -f OV2640_Playback OV3640_Playback OV5642_Playback OV7670_Playback OV2640_DigitalCamera OV5642_DigitalCamera $(objects) \
+	PiCAM_OV2640_Playback.o PiCAM_OV3640_Playback.o PiCAM_OV5642_Playback.o PiCAM_OV7670_Playback.o \
 	PiCAM_OV2640_DigitalCamera.o PiCAM_OV5642_DigitalCamera.o
