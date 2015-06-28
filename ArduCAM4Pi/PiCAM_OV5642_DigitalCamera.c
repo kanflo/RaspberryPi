@@ -74,8 +74,6 @@ int  main(void)
 	{
 		uint8_t buf[256];
 		static int i = 0;
-		static int k = 0;
-		static int n = 0;
 		uint8_t temp,temp_last;
 		uint8_t start_capture = 0;
 

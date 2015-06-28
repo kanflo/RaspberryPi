@@ -68,7 +68,17 @@
 #include <stdlib.h>
 #include <time.h>
 #include <linux/i2c-dev.h>
+#include <wiringPiSPI.h>
 
+uint8_t wrSensorReg8_8(uint8_t regID, uint8_t regDat);
+uint8_t rdSensorReg8_8(uint8_t regID, uint8_t* regDat);
+uint8_t wrSensorReg8_16(uint8_t regID, uint16_t regDat);
+uint8_t rdSensorReg8_16(uint8_t regID, uint16_t* regDat);
+uint8_t wrSensorReg16_8(uint16_t regID, uint8_t regDat);
+uint8_t rdSensorReg16_8(uint16_t regID, uint8_t* regDat);
+int wrSensorRegs8_8(const struct sensor_reg reglist[]);
+int wrSensorRegs8_16(const struct sensor_reg reglist[]);
+int wrSensorRegs16_8(const struct sensor_reg reglist[]);
 
 void delayms(int i)
 {
@@ -123,7 +133,6 @@ int PiCAM(uint8_t model)
 
 void InitCAM()
 {
-	uint8_t rtn = 0;
 	uint8_t reg_val;
 	switch(myCAM.sensor_model)
 	{
@@ -132,7 +141,7 @@ void InitCAM()
 			#if defined OV7660_CAM
 			wrSensorReg8_8(0x12, 0x80);
 			delay(100);
-			rtn = wrSensorRegs8_8(OV7660_QVGA);
+			(void) wrSensorRegs8_8(OV7660_QVGA);
 			#endif
 			break;
 		}
@@ -141,7 +150,7 @@ void InitCAM()
 			#if defined OV7725_CAM
 			wrSensorReg8_8(0x12, 0x80);
 			delay(100);
-			rtn = wrSensorRegs8_8(OV7725_QVGA);
+			(void) wrSensorRegs8_8(OV7725_QVGA);
 			rdSensorReg8_8(0x15,&reg_val);
 			wrSensorReg8_8(0x15, (reg_val | 0x02));
 			#endif
@@ -152,7 +161,7 @@ void InitCAM()
 			#if defined OV7670_CAM
 			wrSensorReg8_8(0x12, 0x80);
 			delay(100);
-			rtn = wrSensorRegs8_8(OV7670_QVGA);
+			(void) wrSensorRegs8_8(OV7670_QVGA);
 			#endif
 			break;
 		}
@@ -161,7 +170,7 @@ void InitCAM()
 			#if defined OV7675_CAM
 			wrSensorReg8_8(0x12, 0x80);
 			delay(100);
-			rtn = wrSensorRegs8_8(OV7675_QVGA);
+			(void) wrSensorRegs8_8(OV7675_QVGA);
 
 			#endif
 			break;
@@ -211,7 +220,7 @@ void InitCAM()
 		case OV3640:
 		{
 			#if defined OV3640_CAM
-			rtn = wrSensorRegs16_8(OV3640_QVGA);
+			(void) wrSensorRegs16_8(OV3640_QVGA);
 			#endif
 			break;
 		}
@@ -382,7 +391,6 @@ uint8_t rdSensorReg16_8(uint16_t regID, uint8_t* regDat)
 
 int wrSensorRegs8_8(const struct sensor_reg reglist[])
 {
-	int err = 0;
 	uint16_t reg_addr = 0;
 	uint16_t reg_val = 0;
 	const struct sensor_reg *next = reglist;
@@ -391,14 +399,10 @@ int wrSensorRegs8_8(const struct sensor_reg reglist[])
 	{
 		reg_addr = pgm_read_word(&next->reg);
 		reg_val = pgm_read_word(&next->val);
-		err = wrSensorReg8_8(reg_addr, reg_val);
-
-		//if (!err)
-		//{
-		//	return err;
-		//}
+		if (!wrSensorReg8_8(reg_addr, reg_val)) {
+			return 0;
+		}
 	   	next++;
-
 	}
 
 	return 1;
@@ -407,8 +411,6 @@ int wrSensorRegs8_8(const struct sensor_reg reglist[])
 
 int wrSensorRegs8_16(const struct sensor_reg reglist[])
 {
-	int err = 0;
-
 	unsigned int reg_addr,reg_val;
 	const struct sensor_reg *next = reglist;
 
@@ -416,9 +418,9 @@ int wrSensorRegs8_16(const struct sensor_reg reglist[])
 	{
 		reg_addr = pgm_read_word(&next->reg);
 		reg_val = pgm_read_word(&next->val);
-		err = wrSensorReg8_16(reg_addr, reg_val);
-		//	if (!err)
-	   	//return err;
+		if (!wrSensorReg8_16(reg_addr, reg_val)) {
+			return 0;
+		}
 	   	next++;
 	}
 
@@ -427,8 +429,6 @@ int wrSensorRegs8_16(const struct sensor_reg reglist[])
 
 int wrSensorRegs16_8(const struct sensor_reg reglist[])
 {
-	int err = 0;
-
 	unsigned int reg_addr,reg_val;
 	const struct sensor_reg *next = reglist;
 
@@ -436,9 +436,9 @@ int wrSensorRegs16_8(const struct sensor_reg reglist[])
 	{
 		reg_addr = pgm_read_word(&next->reg);
 		reg_val = pgm_read_word(&next->val);
-		err = wrSensorReg16_8(reg_addr, reg_val);
-		//	if (!err)
-	   	//return err;
+		if (!wrSensorReg8_16(reg_addr, reg_val)) {
+			return 0;
+		}
 	   	next++;
 	}
 

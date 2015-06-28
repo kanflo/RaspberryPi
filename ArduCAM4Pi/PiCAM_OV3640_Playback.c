@@ -23,6 +23,9 @@
 #define FALSE 0
 #define BMPIMAGEOFFSET 66
 
+int Playback(void);
+int GrabImage(char* str);
+
 const char bmp_header[BMPIMAGEOFFSET] PROGMEM =
 {
       0x42, 0x4D, 0x36, 0x58, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x42, 0x00, 0x00, 0x00, 0x28, 0x00,
@@ -34,7 +37,6 @@ const char bmp_header[BMPIMAGEOFFSET] PROGMEM =
 
 void setup()
 {
-  uint8_t vid,pid;
   uint8_t temp;
 
   UTFT();
@@ -64,7 +66,6 @@ int main()
 {
   setup();
   unsigned long previous_time = 0;
-  static int k = 0;
   uint8_t temp;
   struct timeval tv;
   struct timezone tz;
@@ -124,7 +125,6 @@ int main()
 int GrabImage(char* str)
 {
   char VH,VL;
-  uint8_t temp;
   uint8_t buf[256];
   static int k = 0;
   int i,j = 0;
@@ -189,7 +189,7 @@ int GrabImage(char* str)
   return 1;
 }
 
-int Playback()
+int Playback(void)
 {
 	int nmemb = 1;
 	FILE *bmppath,*fnum,*photo;

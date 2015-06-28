@@ -200,6 +200,7 @@ char nowtime[20];//当前时间
 int PiCAM(uint8_t model);
 void InitCAM();
 void delayms();
+void getnowtime();
 
 void flush_fifo(void);
 void capture(void);
