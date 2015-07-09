@@ -85,9 +85,6 @@ uint8_t bcolorr,bcolorg,bcolorb;
 
 void UTFT();
 
-void bus_write(uint8_t address, uint8_t value);
-uint8_t bus_read(uint8_t address);
-
 void LCD_Writ_Bus(char VH,char VL, uint8_t mode);
 void LCD_Write_DATA(char VH,char VL);
 void LCD_Write_COM(char VL);

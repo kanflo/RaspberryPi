@@ -127,38 +127,38 @@ void InitCAM()
 		case OV7660:
 		{
 			#if defined OV7660_CAM
-			wrSensorReg8_8(0x12, 0x80);
+			arducam_i2c_write(0x12, 0x80);
 			delay(100);
-			(void) wrSensorRegs8_8(OV7660_QVGA);
+			(void) arducam_i2c_write_regs(OV7660_QVGA);
 			#endif
 			break;
 		}
 		case OV7725:
 		{
 			#if defined OV7725_CAM
-			wrSensorReg8_8(0x12, 0x80);
+			arducam_i2c_write(0x12, 0x80);
 			delay(100);
-			(void) wrSensorRegs8_8(OV7725_QVGA);
-			rdSensorReg8_8(0x15,&reg_val);
-			wrSensorReg8_8(0x15, (reg_val | 0x02));
+			(void) arducam_i2c_write_regs(OV7725_QVGA);
+			arducam_i2c_read(0x15,&reg_val);
+			arducam_i2c_write(0x15, (reg_val | 0x02));
 			#endif
 			break;
 		}
 		case OV7670:
 		{
 			#if defined OV7670_CAM
-			wrSensorReg8_8(0x12, 0x80);
+			arducam_i2c_write(0x12, 0x80);
 			delay(100);
-			(void) wrSensorRegs8_8(OV7670_QVGA);
+			(void) arducam_i2c_write_regs(OV7670_QVGA);
 			#endif
 			break;
 		}
 		case OV7675:
 		{
 			#if defined OV7675_CAM
-			wrSensorReg8_8(0x12, 0x80);
+			arducam_i2c_write(0x12, 0x80);
 			delay(100);
-			(void) wrSensorRegs8_8(OV7675_QVGA);
+			(void) arducam_i2c_write_regs(OV7675_QVGA);
 
 			#endif
 			break;
@@ -166,15 +166,15 @@ void InitCAM()
 		case MT9D111:
 		{
 			#if defined MT9D111_CAM
-			//wrSensorRegs8_16(MT9D111_QVGA_3fps);
-			wrSensorRegs8_16(MT9D111_QVGA_15fps);
-			//wrSensorRegs8_16(MT9D111_QVGA_30fps);
+			//arducam_i2c_write_regs16(MT9D111_QVGA_3fps);
+			arducam_i2c_write_regs16(MT9D111_QVGA_15fps);
+			//arducam_i2c_write_regs16(MT9D111_QVGA_30fps);
 			delay(1000);
-			wrSensorReg8_16(0x97, 0x0020);
-			wrSensorReg8_16(0xf0, 0x00);
-			wrSensorReg8_16(0x21, 0x8403); //Mirror Column
-			wrSensorReg8_16(0xC6, 0xA103);//SEQ_CMD
-        	wrSensorReg8_16(0xC8, 0x0005); //SEQ_CMD
+			arducam_i2c_write16(0x97, 0x0020);
+			arducam_i2c_write16(0xf0, 0x00);
+			arducam_i2c_write16(0x21, 0x8403); //Mirror Column
+			arducam_i2c_write16(0xC6, 0xA103);//SEQ_CMD
+        	arducam_i2c_write16(0xC8, 0x0005); //SEQ_CMD
         	#endif
 			break;
 
@@ -182,24 +182,24 @@ void InitCAM()
 		case OV5642:
 		{
 			#if defined OV5642_CAM
-			wrSensorReg16_8(0x3008, 0x80);
+			arducam_i2c_word_write(0x3008, 0x80);
 
 			delay(100);
 			if(myCAM.m_fmt == JPEG)
 			{
-				wrSensorRegs16_8(OV5642_1080P_Video_setting);
-				rdSensorReg16_8(0x3818,&reg_val);
-				wrSensorReg16_8(0x3818, (reg_val | 0x20) & 0xBf);
-				rdSensorReg16_8(0x3621,&reg_val);
-				wrSensorReg16_8(0x3621, reg_val | 0x20);
+				arducam_i2c_write_word_regs(OV5642_1080P_Video_setting);
+				arducam_i2c_word_read(0x3818,&reg_val);
+				arducam_i2c_word_write(0x3818, (reg_val | 0x20) & 0xBf);
+				arducam_i2c_word_read(0x3621,&reg_val);
+				arducam_i2c_word_write(0x3621, reg_val | 0x20);
 			}
 			else
 			{
-				wrSensorRegs16_8(OV5642_RGB_QVGA);
-				rdSensorReg16_8(0x3818,&reg_val);
-				wrSensorReg16_8(0x3818, (reg_val | 0x60) & 0xff);
-				rdSensorReg16_8(0x3621,&reg_val);
-				wrSensorReg16_8(0x3621, reg_val & 0xdf);
+				arducam_i2c_write_word_regs(OV5642_RGB_QVGA);
+				arducam_i2c_word_read(0x3818,&reg_val);
+				arducam_i2c_word_write(0x3818, (reg_val | 0x60) & 0xff);
+				arducam_i2c_word_read(0x3621,&reg_val);
+				arducam_i2c_word_write(0x3621, reg_val & 0xdf);
 			}
 
 			#endif
@@ -208,30 +208,30 @@ void InitCAM()
 		case OV3640:
 		{
 			#if defined OV3640_CAM
-			(void) wrSensorRegs16_8(OV3640_QVGA);
+			(void) arducam_i2c_write_word_regs(OV3640_QVGA);
 			#endif
 			break;
 		}
 		case OV2640:
 		{
 			#if defined OV2640_CAM
-			wrSensorReg8_8(0xff, 0x01);
-			wrSensorReg8_8(0x12, 0x80);
+			arducam_i2c_write(0xff, 0x01);
+			arducam_i2c_write(0x12, 0x80);
 			delay(100);
 			if(myCAM.m_fmt == JPEG)
 			{
-				wrSensorRegs8_8(OV2640_JPEG_INIT);
-				wrSensorRegs8_8(OV2640_YUV422);
-				wrSensorRegs8_8(OV2640_JPEG);
-				wrSensorReg8_8(0xff, 0x01);
-				wrSensorReg8_8(0x15, 0x00);
-				wrSensorRegs8_8(OV2640_320x240_JPEG);
-				//wrSensorReg8_8(0xff, 0x00);
-				//wrSensorReg8_8(0x44, 0x32);
+				arducam_i2c_write_regs(OV2640_JPEG_INIT);
+				arducam_i2c_write_regs(OV2640_YUV422);
+				arducam_i2c_write_regs(OV2640_JPEG);
+				arducam_i2c_write(0xff, 0x01);
+				arducam_i2c_write(0x15, 0x00);
+				arducam_i2c_write_regs(OV2640_320x240_JPEG);
+				//arducam_i2c_write(0xff, 0x00);
+				//arducam_i2c_write(0x44, 0x32);
 			}
 			else
 			{
-				wrSensorRegs8_8(OV2640_QVGA);
+				arducam_i2c_write_regs(OV2640_QVGA);
 			}
 			#endif
 			break;
@@ -271,20 +271,20 @@ void clear_fifo_flag(void)
 uint8_t read_fifo(void)
 {
 	uint8_t data;
-	data = bus_read(0x3D);
+	data = arducam_spi_read(0x3D);
 	return data;
 }
 
 uint8_t read_reg(uint8_t addr)
 {
 	uint8_t data;
-	data = bus_read(addr & 0x7F);
+	data = arducam_spi_read(addr & 0x7F);
 	return data;
 }
 
 void write_reg(uint8_t addr, uint8_t data)
 {
-	bus_write(addr | 0x80, data);
+	arducam_spi_write(addr | 0x80, data);
 }
 
 void OV2640_set_JPEG_size(uint8_t size)
@@ -293,34 +293,34 @@ void OV2640_set_JPEG_size(uint8_t size)
 	switch(size)
 	{
 		case OV2640_160x120:
-			wrSensorRegs8_8(OV2640_160x120_JPEG);
+			arducam_i2c_write_regs(OV2640_160x120_JPEG);
 			break;
 		case OV2640_176x144:
-			wrSensorRegs8_8(OV2640_176x144_JPEG);
+			arducam_i2c_write_regs(OV2640_176x144_JPEG);
 			break;
 		case OV2640_320x240:
-			wrSensorRegs8_8(OV2640_320x240_JPEG);
+			arducam_i2c_write_regs(OV2640_320x240_JPEG);
 			break;
 		case OV2640_352x288:
-			wrSensorRegs8_8(OV2640_352x288_JPEG);
+			arducam_i2c_write_regs(OV2640_352x288_JPEG);
 			break;
 		case OV2640_640x480:
-			wrSensorRegs8_8(OV2640_640x480_JPEG);
+			arducam_i2c_write_regs(OV2640_640x480_JPEG);
 			break;
 		case OV2640_800x600:
-			wrSensorRegs8_8(OV2640_800x600_JPEG);
+			arducam_i2c_write_regs(OV2640_800x600_JPEG);
 			break;
 		case OV2640_1024x768:
-			wrSensorRegs8_8(OV2640_1024x768_JPEG);
+			arducam_i2c_write_regs(OV2640_1024x768_JPEG);
 			break;
 		case OV2640_1280x1024:
-			wrSensorRegs8_8(OV2640_1280x1024_JPEG);
+			arducam_i2c_write_regs(OV2640_1280x1024_JPEG);
 			break;
 		case OV2640_1600x1200:
-			wrSensorRegs8_8(OV2640_1600x1200_JPEG);
+			arducam_i2c_write_regs(OV2640_1600x1200_JPEG);
 			break;
 		default:
-			wrSensorRegs8_8(OV2640_320x240_JPEG);
+			arducam_i2c_write_regs(OV2640_320x240_JPEG);
 			break;
 	}
 	#endif

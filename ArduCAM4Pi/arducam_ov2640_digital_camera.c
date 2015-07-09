@@ -49,8 +49,8 @@ void setup()
   InitLCD();
 
   //Check if the camera module type is OV2640
-  rdSensorReg8_8(OV2640_CHIPID_HIGH, &vid);
-  rdSensorReg8_8(OV2640_CHIPID_LOW, &pid);
+  arducam_i2c_read(OV2640_CHIPID_HIGH, &vid);
+  arducam_i2c_read(OV2640_CHIPID_LOW, &pid);
   if((vid != 0x26) || (pid != 0x42)) {
   	printf("Can't find OV2640 module!\n");
   	exit(EXIT_FAILURE);

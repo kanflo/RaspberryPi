@@ -48,8 +48,8 @@ void setup()
   InitLCD();
   
   //Check if the camera module type is OV5642
-  rdSensorReg16_8(OV5642_CHIPID_HIGH, &vid);
-  rdSensorReg16_8(OV5642_CHIPID_LOW, &pid);
+  arducam_i2c_word_read(OV5642_CHIPID_HIGH, &vid);
+  arducam_i2c_word_read(OV5642_CHIPID_LOW, &pid);
   if((vid != 0x56) || (pid != 0x42)) {
   	printf("Can't find OV5642 module!\n");
   	exit(EXIT_FAILURE);

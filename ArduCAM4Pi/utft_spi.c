@@ -5,6 +5,7 @@
  *      Author: Administrator
  */
 
+#include "arducam_arch.h"
 #include "utft_spi.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,13 +30,13 @@ void LCD_Write_COM_DATA(char com1,int dat1)
 
 void LCD_Write_COM(char VL)
 {
-	bus_write(0xBE, VL);
+	arducam_spi_write(0xBE, VL);
 }
 
 void LCD_Write_DATA(char VH,char VL)
 {
-	bus_write(0xBF, VH);
-  	bus_write(0xBF, VL);
+	arducam_spi_write(0xBF, VH);
+  	arducam_spi_write(0xBF, VL);
 }
 
 void LCD_Writ_Bus(char VH,char VL, uint8_t mode)

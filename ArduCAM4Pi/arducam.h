@@ -208,20 +208,17 @@ uint8_t read_fifo(void);
 uint8_t read_reg(uint8_t addr);
 void write_reg(uint8_t addr, uint8_t data);
 
-void bus_write(uint8_t address, uint8_t value);
-uint8_t bus_read(uint8_t address);
+int arducam_i2c_write_regs(const struct sensor_reg*);
+int arducam_i2c_write_regs16(const struct sensor_reg*);
+int arducam_i2c_write_regs16(const struct sensor_reg reglist[]);
 
-int wrSensorRegs8_8(const struct sensor_reg*);
-int wrSensorRegs8_16(const struct sensor_reg*);
-int wrSensorRegs8_16(const struct sensor_reg reglist[]);
+uint8_t arducam_i2c_write(uint8_t regID, uint8_t regDat);
+uint8_t arducam_i2c_write16(uint8_t regID, uint16_t regDat);
+uint8_t arducam_i2c_word_write(uint16_t regID, uint8_t regDat);
 
-uint8_t wrSensorReg8_8(uint8_t regID, uint8_t regDat);
-uint8_t wrSensorReg8_16(uint8_t regID, uint16_t regDat);
-uint8_t wrSensorReg16_8(uint16_t regID, uint8_t regDat);
-
-uint8_t rdSensorReg8_8(uint8_t regID, uint8_t* regDat);
-uint8_t rdSensorReg8_16(uint8_t regID, uint16_t* regDat);
-uint8_t rdSensorReg16_8(uint16_t regID, uint8_t* regDat);
+uint8_t arducam_i2c_read(uint8_t regID, uint8_t* regDat);
+uint8_t arducam_i2c_read16(uint8_t regID, uint16_t* regDat);
+uint8_t arducam_i2c_word_read(uint16_t regID, uint8_t* regDat);
 
 void OV2640_set_JPEG_size(uint8_t size);
 void set_format(uint8_t fmt);

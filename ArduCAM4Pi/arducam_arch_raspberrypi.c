@@ -25,7 +25,7 @@ bool arducam_i2c_init(uint8_t sensor_addr)
 	return FD != -1;
 }
 
-void bus_write(uint8_t address, uint8_t value)
+void arducam_spi_write(uint8_t address, uint8_t value)
 {
 	uint8_t spiData [2] ;
 	spiData [0] = address ;
@@ -33,7 +33,7 @@ void bus_write(uint8_t address, uint8_t value)
 	wiringPiSPIDataRW (SPI_ARDUCAM, spiData, 2) ;
 }
 
-uint8_t bus_read(uint8_t address)
+uint8_t arducam_spi_read(uint8_t address)
 {
 	uint8_t spiData[2];
 	spiData[0] = address ;
@@ -42,7 +42,7 @@ uint8_t bus_read(uint8_t address)
   	return spiData[1];
 }
 
-uint8_t wrSensorReg8_8(uint8_t regID, uint8_t regDat)
+uint8_t arducam_i2c_write(uint8_t regID, uint8_t regDat)
 {
 	if(FD != -1)
 	{
@@ -52,7 +52,7 @@ uint8_t wrSensorReg8_8(uint8_t regID, uint8_t regDat)
 	return 0;
 }
 
-uint8_t rdSensorReg8_8(uint8_t regID, uint8_t* regDat)
+uint8_t arducam_i2c_read(uint8_t regID, uint8_t* regDat)
 {
 
 	if(FD != -1)
@@ -63,7 +63,7 @@ uint8_t rdSensorReg8_8(uint8_t regID, uint8_t* regDat)
 	return 0;
 }
 
-uint8_t wrSensorReg8_16(uint8_t regID, uint16_t regDat)
+uint8_t arducam_i2c_write16(uint8_t regID, uint16_t regDat)
 {
 	if(FD != -1)
 	{
@@ -73,7 +73,7 @@ uint8_t wrSensorReg8_16(uint8_t regID, uint16_t regDat)
 	return 0;
 }
 
-uint8_t rdSensorReg8_16(uint8_t regID, uint16_t* regDat)
+uint8_t arducam_i2c_read16(uint8_t regID, uint16_t* regDat)
 {
 	if(FD != -1)
 	{
@@ -83,7 +83,7 @@ uint8_t rdSensorReg8_16(uint8_t regID, uint16_t* regDat)
 	return 0;
 }
 
-uint8_t wrSensorReg16_8(uint16_t regID, uint8_t regDat)
+uint8_t arducam_i2c_word_write(uint16_t regID, uint8_t regDat)
 {
 	uint8_t reg_H,reg_L;
 	uint16_t value;
@@ -98,7 +98,7 @@ uint8_t wrSensorReg16_8(uint16_t regID, uint8_t regDat)
 	return 0;
 }
 
-uint8_t rdSensorReg16_8(uint16_t regID, uint8_t* regDat)
+uint8_t arducam_i2c_word_read(uint16_t regID, uint8_t* regDat)
 {
 	uint8_t reg_H,reg_L;
 	int r;
@@ -115,7 +115,7 @@ uint8_t rdSensorReg16_8(uint16_t regID, uint8_t* regDat)
 	return 0;
 }
 
-int wrSensorRegs8_8(const struct sensor_reg reglist[])
+int arducam_i2c_write_regs(const struct sensor_reg reglist[])
 {
 	uint16_t reg_addr = 0;
 	uint16_t reg_val = 0;
@@ -125,7 +125,7 @@ int wrSensorRegs8_8(const struct sensor_reg reglist[])
 	{
 		reg_addr = pgm_read_word(&next->reg);
 		reg_val = pgm_read_word(&next->val);
-		if (!wrSensorReg8_8(reg_addr, reg_val)) {
+		if (!arducam_i2c_write(reg_addr, reg_val)) {
 			return 0;
 		}
 	   	next++;
@@ -135,7 +135,7 @@ int wrSensorRegs8_8(const struct sensor_reg reglist[])
 }
 
 
-int wrSensorRegs8_16(const struct sensor_reg reglist[])
+int arducam_i2c_write_regs16(const struct sensor_reg reglist[])
 {
 	unsigned int reg_addr,reg_val;
 	const struct sensor_reg *next = reglist;
@@ -144,7 +144,7 @@ int wrSensorRegs8_16(const struct sensor_reg reglist[])
 	{
 		reg_addr = pgm_read_word(&next->reg);
 		reg_val = pgm_read_word(&next->val);
-		if (!wrSensorReg8_16(reg_addr, reg_val)) {
+		if (!arducam_i2c_write16(reg_addr, reg_val)) {
 			return 0;
 		}
 	   	next++;
@@ -153,7 +153,7 @@ int wrSensorRegs8_16(const struct sensor_reg reglist[])
 	return 1;
 }
 
-int wrSensorRegs16_8(const struct sensor_reg reglist[])
+int arducam_i2c_write_word_regs(const struct sensor_reg reglist[])
 {
 	unsigned int reg_addr,reg_val;
 	const struct sensor_reg *next = reglist;
@@ -162,7 +162,7 @@ int wrSensorRegs16_8(const struct sensor_reg reglist[])
 	{
 		reg_addr = pgm_read_word(&next->reg);
 		reg_val = pgm_read_word(&next->val);
-		if (!wrSensorReg8_16(reg_addr, reg_val)) {
+		if (!arducam_i2c_write16(reg_addr, reg_val)) {
 			return 0;
 		}
 	   	next++;
