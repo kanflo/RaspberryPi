@@ -39,6 +39,4 @@ picam_ov5642_digital_camera.o : picam_ov5642_digital_camera.c
 	gcc -c picam_ov5642_digital_camera.c -lwiringPi -Wall	
 
 clean : 
-	rm -f ov2640_playback ov3640_playback ov5642_playback ov7670_playback ov2640_digital_camera ov2640_capture ov5642_digital_camera $(objects) \
-	picam_ov2640_playback.o picam_ov3640_playback.o picam_ov5642_playback.o picam_ov7670_Playback.o \
-	picam_ov2640_digital_camera.o picam_ov5642_digital_camera.o
+	rm -f ov2640_playback ov3640_playback ov5642_playback ov7670_playback ov2640_digital_camera ov2640_capture ov5642_digital_camera $(objects) *.o
