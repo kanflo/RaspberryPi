@@ -1,6 +1,6 @@
 /*
  ============================================================================
- Name        : PiCAM_OV2640.c
+ Name        : PiCAM_OV5642.c
  Author      : Lee
  Version     : V1.0
  Copyright   : ArduCAM demo (C)2014 Lee
@@ -15,8 +15,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
-#include "UTFT_SPI.h"
-#include "PiCAM.h"
+#include "utft_spi.h"
+#include "picam.h"
 
 #define BOOL int
 #define TRUE 1
@@ -40,7 +40,7 @@ void setup()
   uint8_t temp;
 
   UTFT();
-  PiCAM(OV2640);
+  PiCAM(OV5642);
 
   printf("ArduCAM Start!\n");
 

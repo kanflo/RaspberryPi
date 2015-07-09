@@ -1,6 +1,6 @@
 #ifndef OV3640_REGS_H
 #define OV3640_REGS_H
-#include "PiCAM.h"
+#include "picam.h"
 const struct sensor_reg OV3640_QVGA[] PROGMEM =
 {
 	{0x3012, 0x80}, 

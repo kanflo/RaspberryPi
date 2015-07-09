@@ -1,38 +1,37 @@
 /*
  ============================================================================
- Name        : PiCAM_OV2640.c
+ Name        : PiCAM_OV5642.c
  Author      : Lee
  Version     : V1.0
  Copyright   : ArduCAM demo (C)2014 Lee
  Description :
  ============================================================================
  */
-
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <time.h>
-#include <unistd.h>
-#include "UTFT_SPI.h"
-#include "PiCAM.h"
+#include "utft_spi.h"
+#include "picam.h"
 
 #define BOOL int
 #define TRUE 1
 #define FALSE 0
 
-
-#define OV2640_CHIPID_HIGH 	0x0A
-#define OV2640_CHIPID_LOW 	0x0B
+#define OV5642_CHIPID_HIGH 0x300a
+#define OV5642_CHIPID_LOW 0x300b
 
 void setup()
 {
   uint8_t vid,pid;
-  uint8_t temp;
+  uint8_t temp; 
 
   UTFT();
-  PiCAM(OV2640);
+  PiCAM(OV5642);
   printf("ArduCAM Start!\n");
+
+
 
   //Check if the ArduCAM SPI bus is OK
   write_reg(ARDUCHIP_TEST1, 0x55);
@@ -42,35 +41,33 @@ void setup()
   	printf("SPI interface Error!\n");
   	exit(EXIT_FAILURE);
   }
-
+  
   //Change MCU mode
   write_reg(ARDUCHIP_MODE, 0x00);
 
   InitLCD();
-
-  //Check if the camera module type is OV2640
-  rdSensorReg8_8(OV2640_CHIPID_HIGH, &vid);
-  rdSensorReg8_8(OV2640_CHIPID_LOW, &pid);
-  if((vid != 0x26) || (pid != 0x42)) {
-  	printf("Can't find OV2640 module!\n");
+  
+  //Check if the camera module type is OV5642
+  rdSensorReg16_8(OV5642_CHIPID_HIGH, &vid);
+  rdSensorReg16_8(OV5642_CHIPID_LOW, &pid);
+  if((vid != 0x56) || (pid != 0x42)) {
+  	printf("Can't find OV5642 module!\n");
   	exit(EXIT_FAILURE);
   } else {
-  	printf("OV2640 detected\n");
+  	printf("OV5642 detected\n");
   }
-
-  // Change to JPEG capture mode and initialize the OV2640 module
-  set_format(JPEG);
-  OV2640_set_JPEG_size(OV2640_1024x768);
-  sleep(2); // Let auto exposure do it's thing after changing image settings
-
+  	
+  //Change to BMP capture mode and initialize the OV5642 module	  	
+  set_format(BMP);
 
   InitCAM();
 }
 
-int main(void)
+int  main(void)
 {
-	int nmemb = 1;
 	BOOL isShowFlag = TRUE;
+	int nmemb = 1;
+
 	setup();
 
 	while(1)
@@ -87,20 +84,20 @@ int main(void)
 			write_reg(ARDUCHIP_MODE, 0x00);
 			set_format(JPEG);
 			InitCAM();
+			write_reg(ARDUCHIP_TIM, VSYNC_LEVEL_MASK);		//VSYNC is active HIGH
 
-			OV2640_set_JPEG_size(OV2640_640x480);
-			//OV2640_set_JPEG_size(OV2640_1600x1200);
 			//Wait until buttom released
 			while(read_reg(ARDUCHIP_TRIG) & SHUTTER_MASK);
-			//delay(1000);
+			delay(1000);
 			start_capture = 1;
+    	
 		}
 		else
 		{
 			if(isShowFlag )
 			{
 				temp = read_reg(ARDUCHIP_TRIG);
-
+  
 				if(!(temp & VSYNC_MASK))				 			//New Frame is coming
 				{
 					write_reg(ARDUCHIP_MODE, 0x00);    		//Switch to MCU
@@ -120,12 +117,12 @@ int main(void)
 			capture();
 			printf("Start Capture\n");
 		}
-
+  
 		if(read_reg(ARDUCHIP_TRIG) & CAP_DONE_MASK)
 		{
 
 			printf("Capture Done!\n");
-
+    
 			//Construct a file name
 			memset(filePath,0,20);
 			strcat(filePath,"/home/pi/");
@@ -171,7 +168,7 @@ int main(void)
 			clear_fifo_flag();
 			//Clear the start capture flag
 			start_capture = 0;
-
+    
 			set_format(BMP);
 			InitCAM();
 			isShowFlag = TRUE;

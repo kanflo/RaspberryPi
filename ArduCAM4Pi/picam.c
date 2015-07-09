@@ -60,8 +60,8 @@
 	2015/01/16 	V1.0	by Lee	first release for Raspberry Pi
 --------------------------------------*/
 
-#include "PiCAM.h"
-#include "UTFT_SPI.h"
+#include "picam.h"
+#include "utft_spi.h"
 #include "memorysaver.h"
 #include <string.h>
 #include <stdint.h>

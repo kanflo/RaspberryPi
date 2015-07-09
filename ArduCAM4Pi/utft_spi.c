@@ -5,7 +5,7 @@
  *      Author: Administrator
  */
 
-#include "UTFT_SPI.h"
+#include "utft_spi.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <wiringPi.h>
