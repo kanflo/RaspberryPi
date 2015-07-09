@@ -42,18 +42,18 @@ void setup()
     uint8_t vid,pid;
     uint8_t temp;
 
-    PiCAM(OV2640);
+    arducam(OV2640);
 
     // Check if the ArduCAM SPI bus is OK
-    write_reg(ARDUCHIP_TEST1, 0x55);
-    temp = read_reg(ARDUCHIP_TEST1);
+    arducam_write_reg(ARDUCHIP_TEST1, 0x55);
+    temp = arducam_read_reg(ARDUCHIP_TEST1);
     if(temp != 0x55) {
         printf("SPI interface error!\n");
         exit(EXIT_FAILURE);
     }
 
     // Change MCU mode
-    write_reg(ARDUCHIP_MODE, 0x00);
+    arducam_write_reg(ARDUCHIP_MODE, 0x00);
 
     // Check if the camera module type is OV2640
     arducam_i2c_read(OV2640_CHIPID_HIGH, &vid);
@@ -91,17 +91,17 @@ int main(int argc, char *argv[])
     if (strcmp(argv[1], "-s") == 0 && argc == 3) {
         setup();
         // Change to JPEG capture mode and initialize the OV2640 module
-        set_format(JPEG);
-        InitCAM();
-        if (strcmp(argv[2], "160x120") == 0) OV2640_set_JPEG_size(OV2640_160x120);
-        else if (strcmp(argv[2], "176x144") == 0) OV2640_set_JPEG_size(OV2640_176x144);
-        else if (strcmp(argv[2], "320x240") == 0) OV2640_set_JPEG_size(OV2640_320x240);
-        else if (strcmp(argv[2], "352x288") == 0) OV2640_set_JPEG_size(OV2640_352x288);
-        else if (strcmp(argv[2], "640x480") == 0) OV2640_set_JPEG_size(OV2640_640x480);
-        else if (strcmp(argv[2], "800x600") == 0) OV2640_set_JPEG_size(OV2640_800x600);
-        else if (strcmp(argv[2], "1024x768") == 0) OV2640_set_JPEG_size(OV2640_1024x768);
-        else if (strcmp(argv[2], "1280x1024") == 0) OV2640_set_JPEG_size(OV2640_1280x1024);
-        else if (strcmp(argv[2], "1600x1200") == 0) OV2640_set_JPEG_size(OV2640_1600x1200);
+        arducam_set_format(JPEG);
+        arducam_init();
+        if (strcmp(argv[2], "160x120") == 0) arducam_set_jpeg_size(OV2640_160x120);
+        else if (strcmp(argv[2], "176x144") == 0) arducam_set_jpeg_size(OV2640_176x144);
+        else if (strcmp(argv[2], "320x240") == 0) arducam_set_jpeg_size(OV2640_320x240);
+        else if (strcmp(argv[2], "352x288") == 0) arducam_set_jpeg_size(OV2640_352x288);
+        else if (strcmp(argv[2], "640x480") == 0) arducam_set_jpeg_size(OV2640_640x480);
+        else if (strcmp(argv[2], "800x600") == 0) arducam_set_jpeg_size(OV2640_800x600);
+        else if (strcmp(argv[2], "1024x768") == 0) arducam_set_jpeg_size(OV2640_1024x768);
+        else if (strcmp(argv[2], "1280x1024") == 0) arducam_set_jpeg_size(OV2640_1280x1024);
+        else if (strcmp(argv[2], "1600x1200") == 0) arducam_set_jpeg_size(OV2640_1600x1200);
         else {
             printf("Unknown resolution %s\n", argv[2]);
             exit(EXIT_FAILURE);
@@ -112,13 +112,13 @@ int main(int argc, char *argv[])
     } else if (strcmp(argv[1], "-c") == 0 && argc == 3) {
         setup();
         // Flush the FIFO
-        flush_fifo();
+        arducam_flush_fifo();
         // Clear the capture done flag
-        clear_fifo_flag();
+        arducam_clear_fifo_flag();
         // Start capture
         printf("Start capture\n");
-        capture();
-        while (!(read_reg(ARDUCHIP_TRIG) & CAP_DONE_MASK)) ;
+        arducam_start_capture();
+        while (!(arducam_read_reg(ARDUCHIP_TRIG) & CAP_DONE_MASK)) ;
         printf(" Done\n");
 
         // Open the new file
@@ -130,14 +130,14 @@ int main(int argc, char *argv[])
 
         printf("Reading FIFO\n");
         i = 0;
-        temp = read_fifo();
+        temp = arducam_read_fifo();
         // Write first image data to buffer
         buf[i++] = temp;
 
         // Read JPEG data from FIFO
         while((temp != 0xD9) | (temp_last != 0xFF)) {
             temp_last = temp;
-            temp = read_fifo();
+            temp = arducam_read_fifo();
             // Write image data to buffer if not full
             if(i < BUF_SIZE) {
                 buf[i++] = temp;
@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
         fclose(fp);
 
         // Clear the capture done flag
-        clear_fifo_flag();
+        arducam_clear_fifo_flag();
     } else {
         printf("Error: unknown or missing argument.\n");
         exit(EXIT_FAILURE);

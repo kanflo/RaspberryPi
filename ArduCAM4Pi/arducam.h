@@ -195,18 +195,18 @@ char filePath[20];
 char nowtime[20];//当前时间
 
 
-int PiCAM(uint8_t model);
-void InitCAM();
+int arducam(uint8_t model);
+void arducam_init();
 void delayms();
 void getnowtime();
 
-void flush_fifo(void);
-void capture(void);
-void clear_fifo_flag(void);
-uint8_t read_fifo(void);
+void arducam_flush_fifo(void);
+void arducam_start_capture(void);
+void arducam_clear_fifo_flag(void);
+uint8_t arducam_read_fifo(void);
 
-uint8_t read_reg(uint8_t addr);
-void write_reg(uint8_t addr, uint8_t data);
+uint8_t arducam_read_reg(uint8_t addr);
+void arducam_write_reg(uint8_t addr, uint8_t data);
 
 int arducam_i2c_write_regs(const struct sensor_reg*);
 int arducam_i2c_write_regs16(const struct sensor_reg*);
@@ -220,8 +220,8 @@ uint8_t arducam_i2c_read(uint8_t regID, uint8_t* regDat);
 uint8_t arducam_i2c_read16(uint8_t regID, uint16_t* regDat);
 uint8_t arducam_i2c_word_read(uint16_t regID, uint8_t* regDat);
 
-void OV2640_set_JPEG_size(uint8_t size);
-void set_format(uint8_t fmt);
+void arducam_set_jpeg_size(uint8_t size);
+void arducam_set_format(uint8_t fmt);
 
 
 #endif /* SRC_ARDUCAM_H_ */

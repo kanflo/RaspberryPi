@@ -28,14 +28,14 @@ void setup()
   uint8_t temp; 
 
   UTFT();
-  PiCAM(OV5642);
+  arducam(OV5642);
   printf("ArduCAM Start!\n");
 
 
 
   //Check if the ArduCAM SPI bus is OK
-  write_reg(ARDUCHIP_TEST1, 0x55);
-  temp = read_reg(ARDUCHIP_TEST1);
+  arducam_write_reg(ARDUCHIP_TEST1, 0x55);
+  temp = arducam_read_reg(ARDUCHIP_TEST1);
   if(temp != 0x55)
   {
   	printf("SPI interface Error!\n");
@@ -43,7 +43,7 @@ void setup()
   }
   
   //Change MCU mode
-  write_reg(ARDUCHIP_MODE, 0x00);
+  arducam_write_reg(ARDUCHIP_MODE, 0x00);
 
   InitLCD();
   
@@ -58,9 +58,9 @@ void setup()
   }
   	
   //Change to BMP capture mode and initialize the OV5642 module	  	
-  set_format(BMP);
+  arducam_set_format(BMP);
 
-  InitCAM();
+  arducam_init();
 }
 
 int  main(void)
@@ -78,16 +78,16 @@ int  main(void)
 		uint8_t start_capture = 0;
 
 		//Wait trigger from shutter buttom
-		if(read_reg(ARDUCHIP_TRIG) & SHUTTER_MASK)
+		if(arducam_read_reg(ARDUCHIP_TRIG) & SHUTTER_MASK)
 		{
 			isShowFlag = FALSE;
-			write_reg(ARDUCHIP_MODE, 0x00);
-			set_format(JPEG);
-			InitCAM();
-			write_reg(ARDUCHIP_TIM, VSYNC_LEVEL_MASK);		//VSYNC is active HIGH
+			arducam_write_reg(ARDUCHIP_MODE, 0x00);
+			arducam_set_format(JPEG);
+			arducam_init();
+			arducam_write_reg(ARDUCHIP_TIM, VSYNC_LEVEL_MASK);		//VSYNC is active HIGH
 
 			//Wait until buttom released
-			while(read_reg(ARDUCHIP_TRIG) & SHUTTER_MASK);
+			while(arducam_read_reg(ARDUCHIP_TRIG) & SHUTTER_MASK);
 			delay(1000);
 			start_capture = 1;
     	
@@ -96,29 +96,29 @@ int  main(void)
 		{
 			if(isShowFlag )
 			{
-				temp = read_reg(ARDUCHIP_TRIG);
+				temp = arducam_read_reg(ARDUCHIP_TRIG);
   
 				if(!(temp & VSYNC_MASK))				 			//New Frame is coming
 				{
-					write_reg(ARDUCHIP_MODE, 0x00);    		//Switch to MCU
+					arducam_write_reg(ARDUCHIP_MODE, 0x00);    		//Switch to MCU
 					resetXY();
-					write_reg(ARDUCHIP_MODE, 0x01);    		//Switch to CAM
-					while(!(read_reg(ARDUCHIP_TRIG)&0x01)); 	//Wait for VSYNC is gone
+					arducam_write_reg(ARDUCHIP_MODE, 0x01);    		//Switch to CAM
+					while(!(arducam_read_reg(ARDUCHIP_TRIG)&0x01)); 	//Wait for VSYNC is gone
 				}
 			}
 		}
 		if(start_capture)
 		{
 			//Flush the FIFO
-			flush_fifo();
+			arducam_flush_fifo();
 			//Clear the capture done flag
-			clear_fifo_flag();
+			arducam_clear_fifo_flag();
 			//Start capture
-			capture();
+			arducam_start_capture();
 			printf("Start Capture\n");
 		}
   
-		if(read_reg(ARDUCHIP_TRIG) & CAP_DONE_MASK)
+		if(arducam_read_reg(ARDUCHIP_TRIG) & CAP_DONE_MASK)
 		{
 
 			printf("Capture Done!\n");
@@ -137,7 +137,7 @@ int  main(void)
 			  	exit(EXIT_FAILURE);
 			}
 			i = 0;
-			temp = read_fifo();
+			temp = arducam_read_fifo();
 			//Write first image data to buffer
 			buf[i++] = temp;
 
@@ -145,7 +145,7 @@ int  main(void)
 			while( (temp != 0xD9) | (temp_last != 0xFF) )
 			{
 				temp_last = temp;
-				temp = read_fifo();
+				temp = arducam_read_fifo();
 				//Write image data to buffer if not full
 				if(i < 256)
 					buf[i++] = temp;
@@ -165,12 +165,12 @@ int  main(void)
 			fclose(fp);
 
 			//Clear the capture done flag
-			clear_fifo_flag();
+			arducam_clear_fifo_flag();
 			//Clear the start capture flag
 			start_capture = 0;
     
-			set_format(BMP);
-			InitCAM();
+			arducam_set_format(BMP);
+			arducam_init();
 			isShowFlag = TRUE;
 		}
 	}

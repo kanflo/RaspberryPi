@@ -76,7 +76,7 @@ void delayms(int i)
 	while(i--);
 }
 
-int PiCAM(uint8_t model)
+int arducam(uint8_t model)
 {
 
 	myCAM.sensor_model = model;
@@ -119,7 +119,7 @@ int PiCAM(uint8_t model)
 	return 1;
 }
 
-void InitCAM()
+void arducam_init()
 {
 	uint8_t reg_val;
 	switch(myCAM.sensor_model)
@@ -253,41 +253,41 @@ void InitCAM()
 	}
 }
 
-void flush_fifo(void)
+void arducam_flush_fifo(void)
 {
-	write_reg(ARDUCHIP_FIFO, FIFO_CLEAR_MASK);
+	arducam_write_reg(ARDUCHIP_FIFO, FIFO_CLEAR_MASK);
 }
 
-void capture(void)
+void arducam_start_capture(void)
 {
-	write_reg(ARDUCHIP_FIFO, FIFO_START_MASK);
+	arducam_write_reg(ARDUCHIP_FIFO, FIFO_START_MASK);
 }
 
-void clear_fifo_flag(void)
+void arducam_clear_fifo_flag(void)
 {
-	write_reg(ARDUCHIP_FIFO, FIFO_CLEAR_MASK);
+	arducam_write_reg(ARDUCHIP_FIFO, FIFO_CLEAR_MASK);
 }
 
-uint8_t read_fifo(void)
+uint8_t arducam_read_fifo(void)
 {
 	uint8_t data;
 	data = arducam_spi_read(0x3D);
 	return data;
 }
 
-uint8_t read_reg(uint8_t addr)
+uint8_t arducam_read_reg(uint8_t addr)
 {
 	uint8_t data;
 	data = arducam_spi_read(addr & 0x7F);
 	return data;
 }
 
-void write_reg(uint8_t addr, uint8_t data)
+void arducam_write_reg(uint8_t addr, uint8_t data)
 {
 	arducam_spi_write(addr | 0x80, data);
 }
 
-void OV2640_set_JPEG_size(uint8_t size)
+void arducam_set_jpeg_size(uint8_t size)
 {
 	#if defined OV2640_CAM
 	switch(size)
@@ -326,7 +326,7 @@ void OV2640_set_JPEG_size(uint8_t size)
 	#endif
 }
 
-void set_format(uint8_t fmt)
+void arducam_set_format(uint8_t fmt)
 {
 	if(fmt == BMP)
 		myCAM.m_fmt = BMP;

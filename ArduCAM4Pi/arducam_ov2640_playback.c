@@ -40,13 +40,13 @@ void setup()
   uint8_t temp;
 
   UTFT();
-  PiCAM(OV2640);
+  arducam(OV2640);
 
   printf("ArduCAM Start!\n");
 
   //Check if the ArduCAM SPI bus is OK
-  write_reg(ARDUCHIP_TEST1, 0x55);
-  temp = read_reg(ARDUCHIP_TEST1);
+  arducam_write_reg(ARDUCHIP_TEST1, 0x55);
+  temp = arducam_read_reg(ARDUCHIP_TEST1);
   if(temp != 0x55)
   {
   	printf("SPI interface Error!");
@@ -54,12 +54,12 @@ void setup()
   }
 
   //Change MCU mode
-  write_reg(ARDUCHIP_MODE, 0x00);
+  arducam_write_reg(ARDUCHIP_MODE, 0x00);
 
   //Initialize the LCD Module
   InitLCD();
 
-  InitCAM();
+  arducam_init();
 }
 
 int main()
@@ -69,25 +69,25 @@ int main()
   uint8_t temp;
   struct timeval tv;
   struct timezone tz;
-  write_reg(ARDUCHIP_MODE, 0x01);		 	//Switch to CAM
+  arducam_write_reg(ARDUCHIP_MODE, 0x01);		 	//Switch to CAM
 
   while(1)
   {
-    temp = read_reg(ARDUCHIP_TRIG);
+    temp = arducam_read_reg(ARDUCHIP_TRIG);
 
     if(!(temp & VSYNC_MASK))				//New Frame is coming
     {
-       write_reg(ARDUCHIP_MODE, 0x00);    	//Switch to MCU
+       arducam_write_reg(ARDUCHIP_MODE, 0x00);    	//Switch to MCU
        resetXY();
-       write_reg(ARDUCHIP_MODE, 0x01);    	//Switch to CAM
-       while(!(read_reg(ARDUCHIP_TRIG)&0x01)); 	//Wait for VSYNC is gone
+       arducam_write_reg(ARDUCHIP_MODE, 0x01);    	//Switch to CAM
+       while(!(arducam_read_reg(ARDUCHIP_TRIG)&0x01)); 	//Wait for VSYNC is gone
     }
     else if(temp & SHUTTER_MASK)
     {
     	gettimeofday (&tv , &tz);
     	previous_time = tv.tv_sec;
 		//printf("previous_time is %d.\n",previous_time);
-       while(read_reg(ARDUCHIP_TRIG) & SHUTTER_MASK)
+       while(arducam_read_reg(ARDUCHIP_TRIG) & SHUTTER_MASK)
        {
     	 gettimeofday (&tv , &tz);
 		 //printf("put time is %d.\n",tv.tv_sec);
@@ -114,7 +114,7 @@ int main()
     		   printf("open file failed\n");
     		   return 0;
     	   	  }				//Generate file name
-         write_reg(ARDUCHIP_MODE, 0x00);    	//Switch to MCU, freeze the screen
+         arducam_write_reg(ARDUCHIP_MODE, 0x00);    	//Switch to MCU, freeze the screen
          GrabImage(filePath);
        }
     }
@@ -139,15 +139,15 @@ int GrabImage(char* str)
 	  return 0;
   }
   //Switch to FIFO Mode
-  write_reg(ARDUCHIP_TIM, MODE_MASK);
+  arducam_write_reg(ARDUCHIP_TIM, MODE_MASK);
   //Flush the FIFO
-  flush_fifo();
+  arducam_flush_fifo();
   //Start capture
-  capture();
+  arducam_start_capture();
   printf("Start Capture\n");
 
   //Polling the capture done flag
-  while(!(read_reg(ARDUCHIP_TRIG) & CAP_DONE_MASK));
+  while(!(arducam_read_reg(ARDUCHIP_TRIG) & CAP_DONE_MASK));
   printf("Capture Done!\n");
 
   k = 0;
@@ -167,8 +167,8 @@ int GrabImage(char* str)
   for(i = 0; i < 240; i++)
     for(j = 0; j < 320; j++)
   {
-      VH = read_fifo();
-      VL = read_fifo();
+      VH = arducam_read_fifo();
+      VL = arducam_read_fifo();
       buf[k++] = VL;
       buf[k++] = VH;
       //Write image data to bufer if not full
@@ -182,10 +182,10 @@ int GrabImage(char* str)
   //Close the file
   fclose(fp);
   //Clear the capture done flag
-  clear_fifo_flag();
+  arducam_clear_fifo_flag();
 
   //Switch to LCD Mode
-  write_reg(ARDUCHIP_TIM, 0);
+  arducam_write_reg(ARDUCHIP_TIM, 0);
   return 1;
 }
 
@@ -195,7 +195,7 @@ int Playback()
 	FILE *bmppath,*fnum,*photo;
 	system("dir /home/pi/*.bmp > /home/pi/bmp.txt");
 	printf("Camera Playback. \n");
-	write_reg(ARDUCHIP_MODE, 0x00);    		//Switch to MCU
+	arducam_write_reg(ARDUCHIP_MODE, 0x00);    		//Switch to MCU
 	InitLCD(PORTRAIT);
 	
 	
@@ -222,7 +222,7 @@ int Playback()
 		printf("display photo %s.\n",str);
 		memset(p,'0',27);
 		p = index(files,'/');
-		//if(read_reg(ARDUCHIP_TRIG)& SHUTTER_MASK)
+		//if(arducam_read_reg(ARDUCHIP_TRIG)& SHUTTER_MASK)
 		//{
 			//p=0;
 			//break;
