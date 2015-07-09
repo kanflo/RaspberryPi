@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include "utft_spi.h"
 #include "arducam.h"
+#include "arducam_arch.h"
 
 #define BOOL int
 #define TRUE 1

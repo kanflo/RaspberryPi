@@ -214,18 +214,6 @@ uint8_t arducam_read_fifo(void);
 uint8_t arducam_read_reg(uint8_t addr);
 void arducam_write_reg(uint8_t addr, uint8_t data);
 
-int arducam_i2c_write_regs(const struct sensor_reg*);
-int arducam_i2c_write_regs16(const struct sensor_reg*);
-int arducam_i2c_write_regs16(const struct sensor_reg reglist[]);
-
-uint8_t arducam_i2c_write(uint8_t regID, uint8_t regDat);
-uint8_t arducam_i2c_write16(uint8_t regID, uint16_t regDat);
-uint8_t arducam_i2c_word_write(uint16_t regID, uint8_t regDat);
-
-uint8_t arducam_i2c_read(uint8_t regID, uint8_t* regDat);
-uint8_t arducam_i2c_read16(uint8_t regID, uint16_t* regDat);
-uint8_t arducam_i2c_word_read(uint16_t regID, uint8_t* regDat);
-
 void arducam_set_jpeg_size(jpeg_size_t size);
 void arducam_set_format(image_format_t fmt);
 
