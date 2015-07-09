@@ -94,7 +94,7 @@ int main()
          if((tv.tv_sec - previous_time) >= 2)
          {
            Playback();
-		   delayms(1000);
+		   arducam_delay_ms(1000);
          }
        }
 	   

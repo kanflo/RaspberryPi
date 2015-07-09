@@ -11,6 +11,9 @@ bool arducam_i2c_init(uint8_t sensor_addr);
 void arducam_spi_write(uint8_t address, uint8_t value);
 uint8_t arducam_spi_read(uint8_t address);
 
+// Delay execution for delay milliseconds
+void arducam_delay_ms(uint32_t delay);
+
 // Read/write 8 bit value to/from 8 bit register address
 uint8_t arducam_i2c_write(uint8_t regID, uint8_t regDat);
 uint8_t arducam_i2c_read(uint8_t regID, uint8_t* regDat);

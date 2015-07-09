@@ -14,7 +14,6 @@
 #include <time.h>
 #include "utft_spi.h"
 #include "arducam.h"
-#include "arducam_arch.h"
 
 #define BOOL int
 #define TRUE 1
@@ -89,7 +88,7 @@ int  main(void)
 
 			//Wait until buttom released
 			while(arducam_read_reg(ARDUCHIP_TRIG) & SHUTTER_MASK);
-			delay(1000);
+			arducam_delay_ms(1000);
 			start_capture = 1;
     	
 		}

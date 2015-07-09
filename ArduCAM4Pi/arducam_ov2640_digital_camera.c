@@ -93,7 +93,7 @@ int main(void)
 			//arducam_set_jpeg_size(OV2640_1600x1200);
 			//Wait until buttom released
 			while(arducam_read_reg(ARDUCHIP_TRIG) & SHUTTER_MASK);
-			//delay(1000);
+			//arducam_delay_ms(1000);
 			start_capture = 1;
 		}
 		else

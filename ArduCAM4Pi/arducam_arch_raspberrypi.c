@@ -4,6 +4,7 @@
 #include <time.h>
 #include <linux/i2c-dev.h>
 #include <wiringPiSPI.h>
+#include <unistd.h>
 #include "arducam.h"
 #include "arducam_arch.h"
 
@@ -23,6 +24,11 @@ bool arducam_i2c_init(uint8_t sensor_addr)
 {
 	FD = wiringPiI2CSetup(sensor_addr);
 	return FD != -1;
+}
+
+void arducam_delay_ms(uint32_t delay)
+{
+  usleep(1000*delay);	
 }
 
 void arducam_spi_write(uint8_t address, uint8_t value)

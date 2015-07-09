@@ -200,10 +200,8 @@ FILE * fp;//SD卡文件返回值
 char filePath[20];
 char nowtime[20];//当前时间
 
-
 int arducam(sensor_model_t model);
 void arducam_init();
-void delayms();
 void getnowtime();
 
 void arducam_flush_fifo(void);
@@ -217,5 +215,6 @@ void arducam_write_reg(uint8_t addr, uint8_t data);
 void arducam_set_jpeg_size(jpeg_size_t size);
 void arducam_set_format(image_format_t fmt);
 
+#include "arducam_arch.h"
 
 #endif /* SRC_ARDUCAM_H_ */

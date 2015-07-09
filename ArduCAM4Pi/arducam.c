@@ -71,11 +71,6 @@
 #include <linux/i2c-dev.h>
 #include <wiringPiSPI.h>
 
-void delayms(int i)
-{
-	while(i--);
-}
-
 int arducam(sensor_model_t model)
 {
 	myCAM.sensor_model = model;
@@ -127,7 +122,7 @@ void arducam_init()
 		{
 			#if defined OV7660_CAM
 			arducam_i2c_write(0x12, 0x80);
-			delay(100);
+			arducam_delay_ms(100);
 			(void) arducam_i2c_write_regs(OV7660_QVGA);
 			#endif
 			break;
@@ -136,7 +131,7 @@ void arducam_init()
 		{
 			#if defined OV7725_CAM
 			arducam_i2c_write(0x12, 0x80);
-			delay(100);
+			arducam_delay_ms(100);
 			(void) arducam_i2c_write_regs(OV7725_QVGA);
 			arducam_i2c_read(0x15,&reg_val);
 			arducam_i2c_write(0x15, (reg_val | 0x02));
@@ -147,7 +142,7 @@ void arducam_init()
 		{
 			#if defined OV7670_CAM
 			arducam_i2c_write(0x12, 0x80);
-			delay(100);
+			arducam_delay_ms(100);
 			(void) arducam_i2c_write_regs(OV7670_QVGA);
 			#endif
 			break;
@@ -156,7 +151,7 @@ void arducam_init()
 		{
 			#if defined OV7675_CAM
 			arducam_i2c_write(0x12, 0x80);
-			delay(100);
+			arducam_delay_ms(100);
 			(void) arducam_i2c_write_regs(OV7675_QVGA);
 
 			#endif
@@ -168,7 +163,7 @@ void arducam_init()
 			//arducam_i2c_write_regs16(MT9D111_QVGA_3fps);
 			arducam_i2c_write_regs16(MT9D111_QVGA_15fps);
 			//arducam_i2c_write_regs16(MT9D111_QVGA_30fps);
-			delay(1000);
+			arducam_delay_ms(1000);
 			arducam_i2c_write16(0x97, 0x0020);
 			arducam_i2c_write16(0xf0, 0x00);
 			arducam_i2c_write16(0x21, 0x8403); //Mirror Column
@@ -183,7 +178,7 @@ void arducam_init()
 			#if defined OV5642_CAM
 			arducam_i2c_word_write(0x3008, 0x80);
 
-			delay(100);
+			arducam_delay_ms(100);
 			if(myCAM.m_fmt == fmtJPEG)
 			{
 				arducam_i2c_write_word_regs(OV5642_1080P_Video_setting);
@@ -216,7 +211,7 @@ void arducam_init()
 			#if defined OV2640_CAM
 			arducam_i2c_write(0xff, 0x01);
 			arducam_i2c_write(0x12, 0x80);
-			delay(100);
+			arducam_delay_ms(100);
 			if(myCAM.m_fmt == fmtJPEG)
 			{
 				arducam_i2c_write_regs(OV2640_JPEG_INIT);
