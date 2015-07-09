@@ -15,7 +15,7 @@
 #include <time.h>
 #include <unistd.h>
 #include "utft_spi.h"
-#include "picam.h"
+#include "arducam.h"
 
 #define BOOL int
 #define TRUE 1

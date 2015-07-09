@@ -1,6 +1,6 @@
 #ifndef OV2640_REGS_H
 #define OV2640_REGS_H
-#include "picam.h"
+#include "arducam.h"
 
 const struct sensor_reg OV2640_QVGA[] PROGMEM =
 {

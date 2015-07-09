@@ -30,7 +30,7 @@
 #include <time.h>
 #include <wiringPiSPI.h>
 #include <unistd.h>
-#include "picam.h"
+#include "arducam.h"
 
 #define OV2640_CHIPID_HIGH  0x0A
 #define OV2640_CHIPID_LOW   0x0B

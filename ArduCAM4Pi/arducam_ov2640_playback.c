@@ -1,6 +1,6 @@
 /*
  ============================================================================
- Name        : PiCAM_OV3640.c
+ Name        : PiCAM_OV2640.c
  Author      : Lee
  Version     : V1.0
  Copyright   : ArduCAM demo (C)2014 Lee
@@ -16,7 +16,7 @@
 #include <unistd.h>
 #include <time.h>
 #include "utft_spi.h"
-#include "picam.h"
+#include "arducam.h"
 
 #define BOOL int
 #define TRUE 1
@@ -40,7 +40,7 @@ void setup()
   uint8_t temp;
 
   UTFT();
-  PiCAM(OV3640);
+  PiCAM(OV2640);
 
   printf("ArduCAM Start!\n");
 
@@ -189,7 +189,7 @@ int GrabImage(char* str)
   return 1;
 }
 
-int Playback(void)
+int Playback()
 {
 	int nmemb = 1;
 	FILE *bmppath,*fnum,*photo;

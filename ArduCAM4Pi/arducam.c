@@ -1,5 +1,5 @@
 /*
- * PiCAM.c
+ * arducam.c
  *
  *  Created on: 2015.01.16
  *      Author: Lee
@@ -60,7 +60,7 @@
 	2015/01/16 	V1.0	by Lee	first release for Raspberry Pi
 --------------------------------------*/
 
-#include "picam.h"
+#include "arducam.h"
 #include "utft_spi.h"
 #include "memorysaver.h"
 #include <string.h>

@@ -1,12 +1,12 @@
 /*
- * PiCAM.h
+ * arducam.h
  *
  *  Created on: 2015.01.16
  *      Author: Lee
  */
 
-#ifndef SRC_PICAM_H_
-#define SRC_PICAM_H_
+#ifndef SRC_ARDUCAM_H_
+#define SRC_ARDUCAM_H_
 
 /*
   ArduCAM.h - Arduino library support for CMOS Image Sensor
@@ -229,4 +229,4 @@ void OV2640_set_JPEG_size(uint8_t size);
 void set_format(uint8_t fmt);
 
 
-#endif /* SRC_PICAM_H_ */
+#endif /* SRC_ARDUCAM_H_ */
