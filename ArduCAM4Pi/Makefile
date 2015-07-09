@@ -1,6 +1,6 @@
 all : ov2640_playback	ov3640_playback	ov5642_playback	ov7670_playback ov2640_digital_camera	ov5642_digital_camera ov2640_capture
 
-objects = default_fonts_spi.o utft_spi.o arducam.o
+objects = default_fonts_spi.o utft_spi.o arducam.o arducam_arch_raspberrypi.o
 
 ov2640_playback : $(objects) arducam_ov2640_playback.o 
 	gcc -o ov2640_playback $(objects) arducam_ov2640_playback.o -lwiringPi -Wall
@@ -23,6 +23,8 @@ utft_spi.o : utft_spi.c
 	gcc -c utft_spi.c -lwiringPi -Wall
 arducam.o : arducam.c
 	gcc -c arducam.c -lwiringPi -Wall
+arducam_arch_raspberrypi.o : arducam_arch_raspberrypi.c
+	gcc -c arducam_arch_raspberrypi.c -lwiringPi -Wall
 arducam_ov2640_playback.o : arducam_ov2640_playback.c
 	gcc -c arducam_ov2640_playback.c -lwiringPi -Wall
 arducam_ov3640_playback.o : arducam_ov3640_playback.c

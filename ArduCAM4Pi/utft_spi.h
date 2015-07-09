@@ -65,9 +65,6 @@
 
 #define BMPIMAGEOFFSET 66
 
-#define	SPI_ARDUCAM_SPEED	1000000
-#define	SPI_ARDUCAM		      0
-
 #define swap(type, i, j) {type t = i; i = j; j = t;}
 
 struct _current_font

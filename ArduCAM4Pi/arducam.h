@@ -190,8 +190,6 @@ struct CAM{
 };
 
 struct CAM myCAM;
-int FD;//I2C返回值
-int spi1,sp2;//spi返回值
 FILE * fp;//SD卡文件返回值
 char filePath[20];
 char nowtime[20];//当前时间
