@@ -76,30 +76,29 @@ void delayms(int i)
 	while(i--);
 }
 
-int arducam(uint8_t model)
+int arducam(sensor_model_t model)
 {
-
 	myCAM.sensor_model = model;
 	switch(myCAM.sensor_model)
 	{
-		case OV7660:
-		case OV7670:
-		case OV7675:
-		case OV7725:
+		case smOV7660:
+		case smOV7670:
+		case smOV7675:
+		case smOV7725:
 			myCAM.sensor_addr = 0x21;
 			break;
-		case MT9D111:
+		case smMT9D111:
 			myCAM.sensor_addr = 0x5d;
 			break;
-		case OV3640:
-		case OV5642:
+		case smOV3640:
+		case smOV5642:
 			myCAM.sensor_addr = 0x3c;
 			break;
-		case OV2640:
-		case OV9655:
+		case smOV2640:
+		case smOV9655:
 			myCAM.sensor_addr = 0x30;
 			break;
-		case MT9M112:
+		case smMT9M112:
 			myCAM.sensor_addr = 0x5d;
 			break;
 		default:
@@ -124,7 +123,7 @@ void arducam_init()
 	uint8_t reg_val;
 	switch(myCAM.sensor_model)
 	{
-		case OV7660:
+		case smOV7660:
 		{
 			#if defined OV7660_CAM
 			arducam_i2c_write(0x12, 0x80);
@@ -133,7 +132,7 @@ void arducam_init()
 			#endif
 			break;
 		}
-		case OV7725:
+		case smOV7725:
 		{
 			#if defined OV7725_CAM
 			arducam_i2c_write(0x12, 0x80);
@@ -144,7 +143,7 @@ void arducam_init()
 			#endif
 			break;
 		}
-		case OV7670:
+		case smOV7670:
 		{
 			#if defined OV7670_CAM
 			arducam_i2c_write(0x12, 0x80);
@@ -153,7 +152,7 @@ void arducam_init()
 			#endif
 			break;
 		}
-		case OV7675:
+		case smOV7675:
 		{
 			#if defined OV7675_CAM
 			arducam_i2c_write(0x12, 0x80);
@@ -163,7 +162,7 @@ void arducam_init()
 			#endif
 			break;
 		}
-		case MT9D111:
+		case smMT9D111:
 		{
 			#if defined MT9D111_CAM
 			//arducam_i2c_write_regs16(MT9D111_QVGA_3fps);
@@ -179,13 +178,13 @@ void arducam_init()
 			break;
 
 		}
-		case OV5642:
+		case smOV5642:
 		{
 			#if defined OV5642_CAM
 			arducam_i2c_word_write(0x3008, 0x80);
 
 			delay(100);
-			if(myCAM.m_fmt == JPEG)
+			if(myCAM.m_fmt == fmtJPEG)
 			{
 				arducam_i2c_write_word_regs(OV5642_1080P_Video_setting);
 				arducam_i2c_word_read(0x3818,&reg_val);
@@ -205,20 +204,20 @@ void arducam_init()
 			#endif
 			break;
 		}
-		case OV3640:
+		case smOV3640:
 		{
 			#if defined OV3640_CAM
 			(void) arducam_i2c_write_word_regs(OV3640_QVGA);
 			#endif
 			break;
 		}
-		case OV2640:
+		case smOV2640:
 		{
 			#if defined OV2640_CAM
 			arducam_i2c_write(0xff, 0x01);
 			arducam_i2c_write(0x12, 0x80);
 			delay(100);
-			if(myCAM.m_fmt == JPEG)
+			if(myCAM.m_fmt == fmtJPEG)
 			{
 				arducam_i2c_write_regs(OV2640_JPEG_INIT);
 				arducam_i2c_write_regs(OV2640_YUV422);
@@ -236,12 +235,12 @@ void arducam_init()
 			#endif
 			break;
 		}
-		case OV9655:
+		case smOV9655:
 		{
 
 			break;
 		}
-		case MT9M112:
+		case smMT9M112:
 		{
 
 			break;
@@ -287,51 +286,48 @@ void arducam_write_reg(uint8_t addr, uint8_t data)
 	arducam_spi_write(addr | 0x80, data);
 }
 
-void arducam_set_jpeg_size(uint8_t size)
+void arducam_set_jpeg_size(jpeg_size_t size)
 {
-	#if defined OV2640_CAM
+#if defined OV2640_CAM
 	switch(size)
 	{
-		case OV2640_160x120:
+		case sz160x120:
 			arducam_i2c_write_regs(OV2640_160x120_JPEG);
 			break;
-		case OV2640_176x144:
+		case sz176x144:
 			arducam_i2c_write_regs(OV2640_176x144_JPEG);
 			break;
-		case OV2640_320x240:
+		case sz320x240:
 			arducam_i2c_write_regs(OV2640_320x240_JPEG);
 			break;
-		case OV2640_352x288:
+		case sz352x288:
 			arducam_i2c_write_regs(OV2640_352x288_JPEG);
 			break;
-		case OV2640_640x480:
+		case sz640x480:
 			arducam_i2c_write_regs(OV2640_640x480_JPEG);
 			break;
-		case OV2640_800x600:
+		case sz800x600:
 			arducam_i2c_write_regs(OV2640_800x600_JPEG);
 			break;
-		case OV2640_1024x768:
+		case sz1024x768:
 			arducam_i2c_write_regs(OV2640_1024x768_JPEG);
 			break;
-		case OV2640_1280x1024:
+		case sz1280x1024:
 			arducam_i2c_write_regs(OV2640_1280x1024_JPEG);
 			break;
-		case OV2640_1600x1200:
+		case sz1600x1200:
 			arducam_i2c_write_regs(OV2640_1600x1200_JPEG);
 			break;
 		default:
 			arducam_i2c_write_regs(OV2640_320x240_JPEG);
 			break;
 	}
-	#endif
+#endif
 }
 
-void arducam_set_format(uint8_t fmt)
+void arducam_set_format(image_format_t fmt)
 {
-	if(fmt == BMP)
-		myCAM.m_fmt = BMP;
-	else
-		myCAM.m_fmt = JPEG;
+	myCAM.m_fmt = fmt;
 }
 
 void getnowtime()

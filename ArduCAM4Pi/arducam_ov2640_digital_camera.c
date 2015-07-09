@@ -31,7 +31,7 @@ void setup()
   uint8_t temp;
 
   UTFT();
-  arducam(OV2640);
+  arducam(smOV2640);
   printf("ArduCAM Start!\n");
 
   //Check if the ArduCAM SPI bus is OK
@@ -59,8 +59,8 @@ void setup()
   }
 
   // Change to JPEG capture mode and initialize the OV2640 module
-  arducam_set_format(JPEG);
-  arducam_set_jpeg_size(OV2640_1024x768);
+  arducam_set_format(fmtJPEG);
+  arducam_set_jpeg_size(sz1024x768);
   sleep(2); // Let auto exposure do it's thing after changing image settings
 
 
@@ -85,10 +85,10 @@ int main(void)
 		{
 			isShowFlag = FALSE;
 			arducam_write_reg(ARDUCHIP_MODE, 0x00);
-			arducam_set_format(JPEG);
+			arducam_set_format(fmtJPEG);
 			arducam_init();
 
-			arducam_set_jpeg_size(OV2640_640x480);
+			arducam_set_jpeg_size(sz640x480);
 			//arducam_set_jpeg_size(OV2640_1600x1200);
 			//Wait until buttom released
 			while(arducam_read_reg(ARDUCHIP_TRIG) & SHUTTER_MASK);
@@ -172,7 +172,7 @@ int main(void)
 			//Clear the start capture flag
 			start_capture = 0;
 
-			arducam_set_format(BMP);
+			arducam_set_format(fmtBMP);
 			arducam_init();
 			isShowFlag = TRUE;
 		}

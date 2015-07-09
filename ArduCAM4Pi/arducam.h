@@ -95,29 +95,35 @@
 /****************************************************/
 /* Sensor related definition 												*/
 /****************************************************/
-#define BMP 	0
-#define JPEG	1
+typedef enum {
+  fmtBMP,
+  fmtJPEG
+} image_format_t;
 
-#define OV7670	0
-#define MT9D111	1
-#define OV7675	2
-#define OV5642	3
-#define OV3640  4
-#define OV2640  5
-#define OV9655	6
-#define MT9M112	7
-#define OV7725	8
-#define OV7660	9
+typedef enum {
+  smOV7670,
+  smMT9D111,
+  smOV7675,
+  smOV5642,
+  smOV3640,
+  smOV2640,
+  smOV9655,
+  smMT9M112,
+  smOV7725,
+  smOV7660
+} sensor_model_t;
 
-#define OV2640_160x120 		0	//160x120
-#define OV2640_176x144 		1	//176x144
-#define OV2640_320x240 		2	//320x240
-#define OV2640_352x288 		3	//352x288
-#define OV2640_640x480		4	//640x480
-#define OV2640_800x600 		5	//800x600
-#define OV2640_1024x768		6	//1024x768
-#define OV2640_1280x1024	7	//1280x1024
-#define OV2640_1600x1200	8	//1600x1200
+typedef enum {
+  sz160x120,
+  sz176x144,
+  sz320x240,
+  sz352x288,
+  sz640x480,
+  sz800x600,
+  sz1024x768,
+  sz1280x1024,
+  sz1600x1200
+} jpeg_size_t;
 
 /****************************************************/
 /* I2C Control Definition 													*/
@@ -184,8 +190,8 @@ struct sensor_reg {
 };
 
 struct CAM{
-	uint8_t m_fmt;
-	uint8_t sensor_model;
+	image_format_t m_fmt;
+	sensor_model_t sensor_model;
 	uint8_t sensor_addr;
 };
 
@@ -195,7 +201,7 @@ char filePath[20];
 char nowtime[20];//当前时间
 
 
-int arducam(uint8_t model);
+int arducam(sensor_model_t model);
 void arducam_init();
 void delayms();
 void getnowtime();
@@ -220,8 +226,8 @@ uint8_t arducam_i2c_read(uint8_t regID, uint8_t* regDat);
 uint8_t arducam_i2c_read16(uint8_t regID, uint16_t* regDat);
 uint8_t arducam_i2c_word_read(uint16_t regID, uint8_t* regDat);
 
-void arducam_set_jpeg_size(uint8_t size);
-void arducam_set_format(uint8_t fmt);
+void arducam_set_jpeg_size(jpeg_size_t size);
+void arducam_set_format(image_format_t fmt);
 
 
 #endif /* SRC_ARDUCAM_H_ */

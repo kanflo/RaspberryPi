@@ -28,7 +28,7 @@ void setup()
   uint8_t temp; 
 
   UTFT();
-  arducam(OV5642);
+  arducam(smOV5642);
   printf("ArduCAM Start!\n");
 
 
@@ -58,7 +58,7 @@ void setup()
   }
   	
   //Change to BMP capture mode and initialize the OV5642 module	  	
-  arducam_set_format(BMP);
+  arducam_set_format(fmtBMP);
 
   arducam_init();
 }
@@ -82,7 +82,7 @@ int  main(void)
 		{
 			isShowFlag = FALSE;
 			arducam_write_reg(ARDUCHIP_MODE, 0x00);
-			arducam_set_format(JPEG);
+			arducam_set_format(fmtJPEG);
 			arducam_init();
 			arducam_write_reg(ARDUCHIP_TIM, VSYNC_LEVEL_MASK);		//VSYNC is active HIGH
 
@@ -169,7 +169,7 @@ int  main(void)
 			//Clear the start capture flag
 			start_capture = 0;
     
-			arducam_set_format(BMP);
+			arducam_set_format(fmtBMP);
 			arducam_init();
 			isShowFlag = TRUE;
 		}

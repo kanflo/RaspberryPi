@@ -42,7 +42,7 @@ void setup()
     uint8_t vid,pid;
     uint8_t temp;
 
-    arducam(OV2640);
+    arducam(smOV2640);
 
     // Check if the ArduCAM SPI bus is OK
     arducam_write_reg(ARDUCHIP_TEST1, 0x55);
@@ -91,17 +91,18 @@ int main(int argc, char *argv[])
     if (strcmp(argv[1], "-s") == 0 && argc == 3) {
         setup();
         // Change to JPEG capture mode and initialize the OV2640 module
-        arducam_set_format(JPEG);
+        arducam_set_format(fmtJPEG);
         arducam_init();
-        if (strcmp(argv[2], "160x120") == 0) arducam_set_jpeg_size(OV2640_160x120);
-        else if (strcmp(argv[2], "176x144") == 0) arducam_set_jpeg_size(OV2640_176x144);
-        else if (strcmp(argv[2], "320x240") == 0) arducam_set_jpeg_size(OV2640_320x240);
-        else if (strcmp(argv[2], "352x288") == 0) arducam_set_jpeg_size(OV2640_352x288);
-        else if (strcmp(argv[2], "640x480") == 0) arducam_set_jpeg_size(OV2640_640x480);
-        else if (strcmp(argv[2], "800x600") == 0) arducam_set_jpeg_size(OV2640_800x600);
-        else if (strcmp(argv[2], "1024x768") == 0) arducam_set_jpeg_size(OV2640_1024x768);
-        else if (strcmp(argv[2], "1280x1024") == 0) arducam_set_jpeg_size(OV2640_1280x1024);
-        else if (strcmp(argv[2], "1600x1200") == 0) arducam_set_jpeg_size(OV2640_1600x1200);
+
+        if (strcmp(argv[2], "160x120") == 0) arducam_set_jpeg_size(sz160x120);
+        else if (strcmp(argv[2], "176x144") == 0) arducam_set_jpeg_size(sz176x144);
+        else if (strcmp(argv[2], "320x240") == 0) arducam_set_jpeg_size(sz320x240);
+        else if (strcmp(argv[2], "352x288") == 0) arducam_set_jpeg_size(sz352x288);
+        else if (strcmp(argv[2], "640x480") == 0) arducam_set_jpeg_size(sz640x480);
+        else if (strcmp(argv[2], "800x600") == 0) arducam_set_jpeg_size(sz800x600);
+        else if (strcmp(argv[2], "1024x768") == 0) arducam_set_jpeg_size(sz1024x768);
+        else if (strcmp(argv[2], "1280x1024") == 0) arducam_set_jpeg_size(sz1280x1024);
+        else if (strcmp(argv[2], "1600x1200") == 0) arducam_set_jpeg_size(sz1600x1200);
         else {
             printf("Unknown resolution %s\n", argv[2]);
             exit(EXIT_FAILURE);

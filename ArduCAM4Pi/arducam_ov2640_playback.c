@@ -40,7 +40,7 @@ void setup()
   uint8_t temp;
 
   UTFT();
-  arducam(OV2640);
+  arducam(smOV2640);
 
   printf("ArduCAM Start!\n");
 
