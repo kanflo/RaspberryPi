@@ -124,13 +124,15 @@ int  main(void)
 			printf("Capture Done!\n");
     
 			//Construct a file name
-			memset(filePath,0,20);
-			strcat(filePath,"/home/pi/");
-			getnowtime();
-			strcat(filePath,nowtime);
-			strcat(filePath,".jpg");
+	        char filePath[128];
+	        time_t timep;
+	        struct tm *p;
+	        time(&timep);
+	        p = localtime(&timep);
+	        printf("Capture Done!\n");
+	        snprintf(filePath, sizeof(filePath), "/home/pi/%04d%02d%02d%02d%02d%02d.bmp", 1900+p->tm_year, 1+p->tm_mon, p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);
 			//Open the new file
-			fp = fopen(filePath,"w+");
+			FILE *fp = fopen(filePath,"w+");
 			if (fp == NULL)
 			{
 				printf("open file failed");

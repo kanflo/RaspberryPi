@@ -101,14 +101,15 @@ int main()
        gettimeofday (&tv , &tz);  
        if((tv.tv_sec - previous_time) < 2)
        {
-		 //printf(" get time is %d.\n",tv.tv_sec);
-    	   memset(filePath,0,28);
-    	   strcat(filePath,"/home/pi/");
-    	   getnowtime();
-    	   strcat(filePath,nowtime);
-    	   strcat(filePath,".bmp");
+         char filePath[128];
+         time_t timep;
+         struct tm *p;
+         time(&timep);
+         p = localtime(&timep);
+         printf("Capture Done!\n");
+         snprintf(filePath, sizeof(filePath), "/home/pi/%04d%02d%02d%02d%02d%02d.bmp", 1900+p->tm_year, 1+p->tm_mon, p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);
     	   //Open the new file
-    	   fp = fopen(filePath,"w+");
+    	   FILE *fp = fopen(filePath,"w+");
     	   if (fp == NULL)
     	   {
     		   printf("open file failed\n");
@@ -132,7 +133,7 @@ int GrabImage(char* str)
   printf("GrabImage.\n");
 
   //Open the new file
-  fp = fopen(str,"w+");
+  FILE *fp = fopen(str,"w+");
   if (fp == NULL)
   {
 	  printf("open file failed\n");

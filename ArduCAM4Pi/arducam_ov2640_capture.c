@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
         printf(" Done\n");
 
         // Open the new file
-        fp = fopen(argv[2], "w+");
+        FILE *fp = fopen(argv[2], "w+");
         if (!fp) {
             printf("Error: could not open %s\n", argv[2]);
             exit(EXIT_FAILURE);

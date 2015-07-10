@@ -16,7 +16,6 @@
 #include <unistd.h>
 #include "utft_spi.h"
 #include "arducam.h"
-#include "arducam_arch.h"
 
 #define BOOL int
 #define TRUE 1
@@ -124,17 +123,15 @@ int main(void)
 
 		if(arducam_read_reg(ARDUCHIP_TRIG) & CAP_DONE_MASK)
 		{
-
+			char filePath[128];
+			time_t timep;
+			struct tm *p;
+			time(&timep);
+			p = localtime(&timep);
 			printf("Capture Done!\n");
-
-			//Construct a file name
-			memset(filePath,0,20);
-			strcat(filePath,"/home/pi/");
-			getnowtime();
-			strcat(filePath,nowtime);
-			strcat(filePath,".jpg");
+			snprintf(filePath, sizeof(filePath), "/home/pi/%04d%02d%02d%02d%02d%02d.jpg", 1900+p->tm_year, 1+p->tm_mon, p->tm_mday, p->tm_hour, p->tm_min, p->tm_sec);
 			//Open the new file
-			fp = fopen(filePath,"w+");
+			FILE *fp = fopen(filePath,"w+");
 			if (fp == NULL)
 			{
 				printf("open file failed");

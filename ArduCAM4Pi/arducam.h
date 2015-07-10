@@ -196,13 +196,9 @@ struct CAM{
 };
 
 struct CAM myCAM;
-FILE * fp;//SD卡文件返回值
-char filePath[20];
-char nowtime[20];//当前时间
 
 int arducam(sensor_model_t model);
 void arducam_init();
-void getnowtime();
 
 void arducam_flush_fifo(void);
 void arducam_start_capture(void);
