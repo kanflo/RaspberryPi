@@ -118,50 +118,52 @@ int arducam(sensor_model_t model)
 void arducam_init()
 {
 	uint8_t reg_val;
-	switch(myCAM.sensor_model)
-	{
+	switch(myCAM.sensor_model) {
+#ifdef OV7660_CAM
 		case smOV7660:
 		{
-			#if defined OV7660_CAM
 			arducam_i2c_write(0x12, 0x80);
 			arducam_delay_ms(100);
 			(void) arducam_i2c_write_regs(OV7660_QVGA);
-			#endif
 			break;
 		}
+#endif
+
+#ifdef OV7725_CAM
 		case smOV7725:
 		{
-			#if defined OV7725_CAM
 			arducam_i2c_write(0x12, 0x80);
 			arducam_delay_ms(100);
 			(void) arducam_i2c_write_regs(OV7725_QVGA);
 			arducam_i2c_read(0x15,&reg_val);
 			arducam_i2c_write(0x15, (reg_val | 0x02));
-			#endif
 			break;
 		}
+#endif
+
+#ifdef OV7670_CAM
 		case smOV7670:
 		{
-			#if defined OV7670_CAM
 			arducam_i2c_write(0x12, 0x80);
 			arducam_delay_ms(100);
 			(void) arducam_i2c_write_regs(OV7670_QVGA);
-			#endif
 			break;
 		}
+#endif
+
+#ifdef OV7675_CAM
 		case smOV7675:
 		{
-			#if defined OV7675_CAM
 			arducam_i2c_write(0x12, 0x80);
 			arducam_delay_ms(100);
 			(void) arducam_i2c_write_regs(OV7675_QVGA);
-
-			#endif
 			break;
 		}
+#endif
+
+#ifdef MT9D111_CAM
 		case smMT9D111:
 		{
-			#if defined MT9D111_CAM
 			//arducam_i2c_write_regs16(MT9D111_QVGA_3fps);
 			arducam_i2c_write_regs16(MT9D111_QVGA_15fps);
 			//arducam_i2c_write_regs16(MT9D111_QVGA_30fps);
@@ -171,13 +173,13 @@ void arducam_init()
 			arducam_i2c_write16(0x21, 0x8403); //Mirror Column
 			arducam_i2c_write16(0xC6, 0xA103);//SEQ_CMD
         	arducam_i2c_write16(0xC8, 0x0005); //SEQ_CMD
-        	#endif
 			break;
-
 		}
+#endif
+
+#ifdef OV5642_CAM
 		case smOV5642:
 		{
-			#if defined OV5642_CAM
 			arducam_i2c_word_write(0x3008, 0x80);
 
 			arducam_delay_ms(100);
@@ -197,20 +199,21 @@ void arducam_init()
 				arducam_i2c_word_read(0x3621,&reg_val);
 				arducam_i2c_word_write(0x3621, reg_val & 0xdf);
 			}
-
-			#endif
 			break;
 		}
+#endif
+
+#ifdef OV3640_CAM
 		case smOV3640:
 		{
-			#if defined OV3640_CAM
 			(void) arducam_i2c_write_word_regs(OV3640_QVGA);
-			#endif
 			break;
 		}
+#endif
+
+#ifdef OV2640_CAM
 		case smOV2640:
 		{
-			#if defined OV2640_CAM
 			arducam_i2c_write(0xff, 0x01);
 			arducam_i2c_write(0x12, 0x80);
 			arducam_delay_ms(100);
@@ -229,9 +232,10 @@ void arducam_init()
 			{
 				arducam_i2c_write_regs(OV2640_QVGA);
 			}
-			#endif
 			break;
 		}
+#endif
+
 		case smOV9655:
 		{
 
@@ -285,7 +289,7 @@ void arducam_write_reg(uint8_t addr, uint8_t data)
 
 void arducam_set_jpeg_size(jpeg_size_t size)
 {
-#if defined OV2640_CAM
+#ifdef OV2640_CAM
 	switch(size)
 	{
 		case sz160x120:
