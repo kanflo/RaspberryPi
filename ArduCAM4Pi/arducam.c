@@ -71,6 +71,8 @@
 #include <linux/i2c-dev.h>
 #include <wiringPiSPI.h>
 
+static struct CAM myCAM;
+
 int arducam(sensor_model_t model)
 {
 	myCAM.sensor_model = model;

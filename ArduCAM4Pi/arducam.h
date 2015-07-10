@@ -125,6 +125,17 @@ typedef enum {
   sz1600x1200
 } jpeg_size_t;
 
+struct sensor_reg {
+  uint16_t reg;
+  uint16_t val;
+};
+
+struct CAM {
+  image_format_t m_fmt;
+  sensor_model_t sensor_model;
+  uint8_t sensor_addr;
+};
+
 /****************************************************/
 /* I2C Control Definition 													*/
 /****************************************************/
@@ -184,18 +195,6 @@ typedef enum {
 /****************************************************************/
 /* define a structure for sensor register initialization values */
 /****************************************************************/
-struct sensor_reg {
-	uint16_t reg;
-	uint16_t val;
-};
-
-struct CAM{
-	image_format_t m_fmt;
-	sensor_model_t sensor_model;
-	uint8_t sensor_addr;
-};
-
-struct CAM myCAM;
 
 int arducam(sensor_model_t model);
 void arducam_init();
