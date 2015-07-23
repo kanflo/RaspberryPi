@@ -62,14 +62,11 @@
 
 #include "arducam.h"
 #include "arducam_arch.h"
-#include "utft_spi.h"
 #include "memorysaver.h"
 #include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <time.h>
-#include <linux/i2c-dev.h>
-#include <wiringPiSPI.h>
 
 static struct CAM myCAM;
 
